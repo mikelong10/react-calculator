@@ -8,3 +8,92 @@
   list-style: none;
   scroll-behavior: smooth;
 }
+
+body {
+  min-height: 100vh;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0b131a;
+}
+
+#root {
+  background-color: #1d2b34;
+  border: none;
+  border-radius: 24px;
+}
+
+.calc {
+  width: 288px;
+  margin: 24px;
+}
+
+.output {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 96px;
+  text-align: end;
+  padding: 4px 20px 4px 8px;
+}
+
+.prev {
+  height: 32px;
+  color: #80929f;
+  font-size: 24px;
+  padding-right: 4px;
+}
+
+.current {
+  height: 64px;
+  color: #f2f9ff;
+  font-size: 48px;
+}
+
+.inputs {
+  display: flex;
+}
+
+.input {
+  width: 64px;
+  height: 64px;
+  font-size: 28px;
+  color: #f2f9ff;
+  background-color: #536069;
+  border: none;
+  border-radius: 50%;
+  margin: 4px;
+  transition: all 0.1s ease;
+}
+
+.input:hover {
+  background-color: #80929f;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+}
+
+.misc {
+  display: flex;
+  /* justify-content: space-between; */
+}
+
+.numbers {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+}
+
+.zero {
+  width: 136px;
+  text-align: start;
+  padding-left: 24px;
+  border-radius: 32px;
+}
+
+.operation {
+  font-size: 30px;
+}
