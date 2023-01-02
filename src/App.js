@@ -18,10 +18,19 @@ export default function Calc() {
   }
 
   function enterNumber(value) {
-    setClearStatus('C')
-    const newCurOutput = curOutput + value
-    if (newCurOutput.length > 10) {
-      setCurOutput(newCurOutput.substring(0, 10))
+    let newCurOutput
+    if (!(curOutput.includes('.') && value === '.')) {
+      setClearStatus('C')
+      newCurOutput = curOutput + value
+      if (newCurOutput === '.') {
+        newCurOutput = '0.'
+      }
+      if (newCurOutput.length > 1 && newCurOutput.substring(0, 1) === '0' && value !== '.' && newCurOutput.substring(0, 2) !== '0.') {
+        newCurOutput = newCurOutput.substring(1)
+      }
+    }
+    if (newCurOutput.length > 9) {
+      setCurOutput(newCurOutput.substring(0, 9))
     } else {
       setCurOutput(newCurOutput)
     }
@@ -64,7 +73,7 @@ export default function Calc() {
     const answer = evaluation.toString()
     if (answer.includes('.') && (answer.split('.')[1].substring(0, 6) === '999999')) {
       setCurOutput(Math.round(evaluation).toString())
-    } else if (answer.length > 10) {
+    } else if (answer.length > 9) {
       setCurOutput(answer.substring(0, 9))
     } else {
       setCurOutput(answer)
