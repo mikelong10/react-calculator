@@ -37,26 +37,30 @@ export default function Calc() {
   }
 
   function doOperation(operation) {
-    setPrevOutput(curOutput.concat(' ', operation))
-    setCurOutput('')
+    if (curOutput) {
+      setPrevOutput(curOutput.concat(' ', operation))
+      setCurOutput('')
+    }
   }
 
   function evaluate() {
-    const expression = prevOutput.concat(' ', curOutput).split(' ')
-    setPrevOutput('')
-    // actually do the math
-    const [firstVal, operation, secondVal] = expression
-    doMath(firstVal, operation, secondVal)
+    if (prevOutput && curOutput) {
+      const expression = prevOutput.concat(' ', curOutput).split(' ')
+      setPrevOutput('')
+      // actually do the math
+      const [firstVal, operation, secondVal] = expression
+      doMath(firstVal, operation, secondVal)
+    }
   }
 
   // to toggle the sign (positive/negative) of the current number
   function toggleSign() {
-    setCurOutput(math.multiply(Number(curOutput), -1).toString())
+    if (curOutput) setCurOutput(math.multiply(Number(curOutput), -1).toString())
   }
 
   // calculate percentage version of the current output
   function percentize() {
-    doMath(curOutput, '/', '100')
+    if (curOutput) doMath(curOutput, '/', '100')
   }
 
   function doMath(firstVal, operation, secondVal) {
