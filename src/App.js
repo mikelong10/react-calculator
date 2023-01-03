@@ -18,8 +18,8 @@ export default function Calc() {
   }
 
   function enterNumber(value) {
-    let newCurOutput
-    if (!(curOutput.includes('.') && value === '.')) {
+    let newCurOutput = curOutput
+    if (!(curOutput && curOutput.includes('.') && value === '.')) {
       setClearStatus('C')
       newCurOutput = curOutput + value
       if (newCurOutput === '.') {
@@ -29,7 +29,7 @@ export default function Calc() {
         newCurOutput = newCurOutput.substring(1)
       }
     }
-    if (newCurOutput.length > 9) {
+    if (newCurOutput && newCurOutput.length > 9) {
       setCurOutput(newCurOutput.substring(0, 9))
     } else {
       setCurOutput(newCurOutput)
@@ -37,9 +37,15 @@ export default function Calc() {
   }
 
   function doOperation(operation) {
-    if (curOutput) {
+    if (prevOutput && curOutput) {
+      const val = evaluate()
+      setPrevOutput(val.concat(' ', operation))
+      setCurOutput('')
+      setClearStatus('AC')
+    } else if (curOutput) {
       setPrevOutput(curOutput.concat(' ', operation))
       setCurOutput('')
+      setClearStatus('AC')
     }
   }
 
@@ -49,7 +55,7 @@ export default function Calc() {
       setPrevOutput('')
       // actually do the math
       const [firstVal, operation, secondVal] = expression
-      doMath(firstVal, operation, secondVal)
+      return doMath(firstVal, operation, secondVal)
     }
   }
 
@@ -60,28 +66,42 @@ export default function Calc() {
 
   // calculate percentage version of the current output
   function percentize() {
-    if (curOutput) doMath(curOutput, '/', '100')
+    if (curOutput) doMath(curOutput, '*', '100')
   }
 
   function doMath(firstVal, operation, secondVal) {
     let evaluation
     if (operation === '+') {
-      evaluation = math.add(Number(firstVal), Number(secondVal))
+      evaluation = math.add(parseFloat(firstVal), parseFloat(secondVal))
     } else if (operation === '–' || operation === '-') {
-      evaluation = math.subtract(Number(firstVal), Number(secondVal))
+      evaluation = math.subtract(parseFloat(firstVal), parseFloat(secondVal))
     } else if (operation === 'x' || operation === '*') {
-      evaluation = math.multiply(Number(firstVal), Number(secondVal))
+      evaluation = math.multiply(parseFloat(firstVal), parseFloat(secondVal))
     } else if (operation === '÷' || operation === '/') {
-      evaluation = math.divide(Number(firstVal), Number(secondVal))
+      evaluation = math.divide(parseFloat(firstVal), parseFloat(secondVal))
     }
     const answer = evaluation.toString()
+    console.log(answer)
+    let nextOutput
     if (answer.includes('.') && (answer.split('.')[1].substring(0, 6) === '999999')) {
-      setCurOutput(Math.round(evaluation).toString())
+      nextOutput = Math.round(evaluation).toString()
     } else if (answer.length > 9) {
-      setCurOutput(answer.substring(0, 9))
+      let truncate = answer
+      if (answer.includes('.')) {
+        const numDecPlaces = 9 - answer.split('.')[0].length - 1
+        const roundFactor = Math.pow(10, numDecPlaces)
+        // Round evaluation
+        const rounded = Math.round(evaluation * roundFactor) / roundFactor;
+        console.log(rounded)
+        // Return the number as a string
+        truncate = rounded.toString();
+      }
+      nextOutput = parseFloat(truncate.substring(0, 9)).toString()
     } else {
-      setCurOutput(answer)
+      nextOutput = answer
     }
+    setCurOutput(nextOutput)
+    return nextOutput
   }
 
   return (

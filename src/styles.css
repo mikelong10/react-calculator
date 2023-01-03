@@ -49,6 +49,7 @@ body {
   height: 64px;
   color: #f2f9ff;
   font-size: 48px;
+  /* overflow: scroll; */
 }
 
 .inputs {
