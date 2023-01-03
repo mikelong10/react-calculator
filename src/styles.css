@@ -47,9 +47,8 @@ body {
 
 .current {
   height: 64px;
-  color: #f2f9ff;
+  color: #f8f2ff;
   font-size: 48px;
-  /* overflow: scroll; */
 }
 
 .inputs {
@@ -79,7 +78,6 @@ body {
 
 .misc {
   display: flex;
-  /* justify-content: space-between; */
 }
 
 .numbers {
